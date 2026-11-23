@@ -1,20 +1,38 @@
 # REWIND
 
-A memory archive frontend. Supabase Auth and Postgres provide account login and shared cloud data.
+A private memory archive frontend with Supabase Auth and cloud archive sync.
 
+## Required setup before deploy
 
-## Deploy setup
-1. Open your Supabase project dashboard.
-2. Run the SQL file `supabase/schema.sql` in the SQL Editor.
-3. In Authentication -> Users, create two user accounts (viewer and admin) using emails and passwords. The app itself does not have public signup.
-4. Profiles are created automatically as viewer. After creating the intended admin account, run this in the SQL Editor with the correct email:
-   `update public.profiles set role='admin' where id=(select id from auth.users where email='ADMIN_EMAIL_HERE');`
-5. Confirm role in `public.profiles` and keep signup closed if the archive is invite-only.
-6. Deploy the `rewind_src` folder to Cloudflare Pages. `_headers` contains security headers. Verify the deployed headers and all access-control behavior before storing private media.
+1. In Supabase Dashboard -> SQL Editor, run `supabase/schema.sql`.
+2. In Supabase Authentication -> Users, create two users (Viewer and Admin) with email/password.
+3. Profiles are created automatically as `viewer` by the trigger.
+4. Promote ONLY the intended admin user from SQL Editor:
+   ```sql
+   update public.profiles
+   set role='admin'
+   where id=(select id from auth.users where email='ADMIN_EMAIL_HERE');
+   ```
+5. Verify the admin profile's role. Keep public signup disabled.
+6. In Vercel, deploy the project as a static site from the project root. `vercel.json` provides headers.
+7. Test Viewer and Admin accounts, direct RLS permissions, upload, edit, delete, logout, password update, and second-device sync before storing private memories.
 
+## Cloud behavior
 
-## Important
-- `supabase/config.js` contains the frontend project URL and publishable key. This key is browser-safe; never add service-role or secret keys to the app.
-- Database policies protect writes, not just the interface. Do not grant viewer profiles admin roles from the client.
-- Media currently accepts HTTPS links, including Google Drive. Drive files set to “anyone with the link” are not private; use a private Storage bucket and signed access for sensitive media.
-- This is not fully production-verified: the SQL must be applied in the dashboard, users/roles configured, and deployment and security tests performed.
+- Supabase Auth validates email/password; there are no hardcoded demo passwords or public sign-up UI.
+- The selected Viewer/Admin profile is verified against the user's role stored in `profiles`.
+- `archive_state` stores a shared JSON archive (`id='main'`).
+- RLS lets authenticated users read the archive and only profile admins insert/update it.
+- Admin saves update the cloud row. Realtime subscriptions update viewers' UI when changes are broadcast (requires Supabase Realtime enabled for archive_state).
+- Legacy local data is migrated to the cloud when the archive row does not exist and an Admin signs in. Existing browser data is not automatically merged with an existing cloud archive.
+
+## Change password
+
+After sign-in, open the account menu and choose Change password. Supabase Auth updates the signed-in account password. The app never displays or stores account passwords.
+
+## Security notes
+
+- The Supabase publishable key in `app.js` is browser-safe; database RLS is the actual permission boundary.
+- Do not add service-role keys, secret keys, or database passwords to frontend code.
+- Drive links must be HTTPS but Drive links set to "anyone with link" remain public to anyone who possesses them.
+- This package has not undergone independent penetration testing. Apply SQL and run the tests before treating it as production secure.
