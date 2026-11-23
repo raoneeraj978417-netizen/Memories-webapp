@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https:; media-src 'self' https: blob:; frame-src https://drive.google.com https://docs.google.com; connect-src 'self' https://mxantgyaedapdaazoibl.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com" />
+    <title>REWIND — A living family archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="era-2004">
+    <main id="app">
+      <section class="gate-screen" id="gateScreen" aria-label="Choose your profile">
+        <div class="gate-background" id="gateBackground"></div>
+        <div class="grain"></div>
+        <div class="gate-brand"><span class="brand-mark" id="gateBrandMark">R</span> <span id="gateBrandName">REWIND</span></div>
+        <div class="gate-content">
+          <p class="eyebrow" id="gateEyebrow">THE MEMORY ARCHIVE</p>
+          <h1 id="gateHeading">Who’s<br /><em>rewinding?</em></h1>
+          <p class="gate-copy" id="gateCopy">Step into the years that made us.</p>
+          <div class="profile-picks">
+            <button class="profile-card" data-role="viewer"><span class="avatar avatar-viewer">M</span><span id="viewerProfileLabel">Memory viewer</span></button>
+            <button class="profile-card" data-role="admin"><span class="avatar avatar-admin">+</span><span id="adminProfileLabel">Archive keeper</span></button>
+          </div>
+        </div>
+        <p class="gate-foot" id="gateFoot">A private collection · made with love</p>
+      </section>
+
+      <section class="login-screen hidden" id="loginScreen">
+        <button class="back-button" id="backToProfiles">← Back</button>
+        <div class="login-panel">
+          <div class="login-icon" id="loginIcon">M</div>
+          <p class="eyebrow" id="loginKicker">VIEWER ACCESS</p>
+          <h2 id="loginTitle">Welcome back.</h2>
+          <p id="loginDescription">Enter your passcode to revisit the good old days.</p>
+          <form id="loginForm">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" name="email" type="email" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Your account email" required />
+            <label for="password">Password</label>
+            <input id="password" name="rewind-passcode" type="password" autocomplete="current-password" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Enter password" required />
+            <p class="form-error" id="loginError"></p>
+            <button class="primary-button" type="submit">Open the archive <span>→</span></button>
+          </form>
+          <p class="hint" id="loginHint"></p>
+        </div>
+      </section>
+
+      <section class="archive hidden" id="archive">
+        <header class="topbar">
+          <button class="wordmark" id="homeButton"><span class="brand-mark">R</span> REWIND</button>
+          <div class="top-actions">
+            <span class="current-era-label" id="eraLabel">THE BEGINNING</span>
+            <button class="account-button" id="accountButton" aria-label="Open account menu"><span id="accountInitial">M</span></button>
+            <div class="account-menu hidden" id="accountMenu">
+              <p>Signed in as <strong id="accountRole">Viewer</strong></p>
+              <button id="switchRole">Switch profile</button>
+              <button id="logoutButton">Sign out</button>
+            </div>
+          </div>
+        </header>
+
+        <section class="hero" id="hero">
+          <div class="hero-image" id="heroImage"></div>
+          <div class="hero-overlay"></div>
+          <div class="hero-copy">
+            <p class="eyebrow" id="heroEyebrow">CHAPTER ONE</p>
+            <h1 id="heroYear">2004</h1>
+            <p class="hero-title" id="heroTitle">Before we knew<br />how fast it goes.</p>
+            <p class="hero-description" id="heroDescription">The start of a thousand stories. Grainy, imperfect, entirely ours.</p>
+            <button class="watch-button" id="jumpToMemories"><span>▶</span> Explore this year</button>
+          </div>
+          <p class="hero-count" id="heroCount">03 MOMENTS</p>
+        </section>
+
+        <section class="timeline-wrap" aria-label="Timeline">
+          <div class="timeline-head"><span>JOURNEY THROUGH TIME</span><span id="timelineRange">2004 — 2025</span></div>
+          <div class="timeline-scroller" id="timelineScroller"><div class="timeline-track" id="timelineTrack"></div></div>
+        </section>
+
+        <section class="memories-section" id="memories">
+          <div class="section-heading">
+            <div><p class="eyebrow">THE COLLECTION</p><h2 id="sectionTitle">2004, in frames</h2></div>
+            <p class="memory-total" id="memoryTotal">3 memories</p>
+          </div>
+          <div class="media-grid" id="mediaGrid"></div>
+          <div class="empty-state hidden" id="emptyState"><span>⌁</span><h3>A page waiting to be filled</h3><p>This year is still a blank frame.</p></div>
+        </section>
+        <footer>REWIND / <span id="footerYear">2004</span> · KEEP THE MOMENTS CLOSE</footer>
+      </section>
+
+      <section class="admin-drawer hidden" id="adminDrawer" aria-label="Archive settings">
+        <div class="drawer-head"><div><p class="eyebrow">ARCHIVE KEEPER</p><h2>Shape the story.</h2></div><button class="close-drawer" id="closeDrawer">×</button></div>
+        <nav class="admin-tabs"><button class="active" data-tab="add">Add memory</button><button data-tab="settings">Year settings</button><button data-tab="home">Home page</button></nav>
+        <div class="admin-panel" id="tab-add">
+          <form id="mediaForm">
+            <label for="memoryYear">Place it in</label><select id="memoryYear"></select>
+            <label for="memoryType">Memory type</label><div class="toggle-row"><button type="button" class="type-toggle active" data-type="photo">Photo</button><button type="button" class="type-toggle" data-type="video">Video</button></div>
+            <label for="memoryTitle">A small title</label><input id="memoryTitle" required placeholder="Sunday in the garden" />
+            <label for="memoryCaption">Caption <span>optional</span></label><textarea id="memoryCaption" placeholder="What do you want to remember?"></textarea>
+            <label for="memoryUrl">Google Drive photo or video link</label><input id="memoryUrl" type="url" required placeholder="Paste a sharing link from Google Drive" />
+            <div class="drive-preview hidden" id="drivePreview"><p>LIVE PREVIEW</p><div id="drivePreviewMedia"></div></div>
+            <button class="primary-button" type="submit">Add to the archive <span>+</span></button>
+          </form>
+          <p class="local-note">Tip: set the Google Drive file to “Anyone with the link can view.” The archive keeps only the link and fetches media when that year opens.</p>
+        </div>
+        <div class="admin-panel hidden" id="tab-settings">
+          <form id="yearForm"><label for="settingsYear">Edit a year</label><select id="settingsYear"></select><label for="yearTitle">Mood title</label><input id="yearTitle" /><label for="yearDescription">A few words</label><textarea id="yearDescription"></textarea><label for="yearTheme">Visual era</label><select id="yearTheme"><option value="mono">Monochrome / film</option><option value="warm">Warm / golden</option><option value="pop">Colour pop</option><option value="neon">Digital neon</option><option value="now">Modern / vivid</option></select><button class="primary-button" type="submit">Save year mood <span>✓</span></button></form>
+        </div>
+        <div class="admin-panel hidden" id="tab-home">
+          <form id="homeForm"><p class="security-copy">Make the profile screen feel like your archive before anyone enters it.</p><label for="homeBrand">Archive name</label><input id="homeBrand" maxlength="32" /><label for="homeEyebrowInput">Small label</label><input id="homeEyebrowInput" maxlength="60" /><label for="homeHeadingInput">Main heading</label><textarea id="homeHeadingInput" maxlength="100" placeholder="Use a new line to break the heading"></textarea><label for="homeCopyInput">Supporting text</label><textarea id="homeCopyInput" maxlength="180"></textarea><label for="homeBackgroundInput">Background image link <span>optional</span></label><input id="homeBackgroundInput" type="url" placeholder="Google Drive sharing link or image URL" /><label for="homeViewerLabel">Viewer profile label</label><input id="homeViewerLabelInput" maxlength="32" /><label for="homeAdminLabel">Admin profile label</label><input id="homeAdminLabelInput" maxlength="32" /><label for="homeFooterInput">Footer note</label><input id="homeFooterInput" maxlength="100" /><button class="primary-button" type="submit">Save home page <span>✓</span></button></form>
+        </div>
+      </section>
+      <button class="keeper-fab hidden" id="keeperFab"><span>+</span> Archive tools</button>
+      <div class="lightbox hidden" id="lightbox"><button id="closeLightbox">×</button><div id="lightboxContent"></div></div>
+      <div class="toast hidden" id="toast"></div>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
